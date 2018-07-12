@@ -62,3 +62,12 @@ def backward():
 		backward()
 
 
+tf.get_collection('')#从集合中取出全部变量，生成一个列表
+tf.add_n([ ])#列表内对于元素相加
+tf.cast(x,dtype)#把x转为dtype类型
+tf.argmax(x,axis)#返回最大值所在索引号，如：tf.argmax([1,0,0],1)返回0
+os.path.join('home','name') #返回home/name
+字符串.split()#按指定拆分符对字符串切片，返回分割后的列表
+# 如：'./model/mnist_model-1001'.split('/')[-1]  返回1001
+
+with tf.Graph().as_default() as g:#其内定义的节点在计算图g中
