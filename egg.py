@@ -68,6 +68,28 @@ tf.cast(x,dtype)#把x转为dtype类型
 tf.argmax(x,axis)#返回最大值所在索引号，如：tf.argmax([1,0,0],1)返回0
 os.path.join('home','name') #返回home/name
 字符串.split()#按指定拆分符对字符串切片，返回分割后的列表
-# 如：'./model/mnist_model-1001'.split('/')[-1]  返回1001
+# 如：'./model/mnist_model-1001'.split('/')[-1].split('-')[-1]  返回1001
 
 with tf.Graph().as_default() as g:#其内定义的节点在计算图g中
+
+# 保存模型
+saver=tf.train.Saver()  #实例化saver对象
+with tf.Session() as sess: #在with结构for循环中一定轮数时 保存模型到当前会话
+	for i in range(STEPS):
+		if i%轮数==0:#拼接成 ./MODEL_SAVE_PATH/MODEL_NAME-global_step
+			saver.save(sess,os.path.join(MODEL_SAVE_PATH,MODEL_NAME)，global_step=global_step)
+#加载模型
+with tf.Session() as sess:
+	ckpy=tf.train.get_checkpoint_state(存储路径)
+	if ckpt and ckpt.model_checkpoint_path:
+		saver.restore(sess,ckpt.model_checkpoint_path)
+
+#实例化可还原平均值的saver
+ema=tf.train.ExponentialMovingAverage(滑动平均基数)
+ema_restore=ema.variables_to_restore()
+saver=tf.train.Saver(ema_restore)
+
+#准确率计算方法
+correct_prediction=tf.equal(tf.argmax(y,1),tf.argmax(y_,1))
+accuracy=tf.reduce_mean(tf.cast(correct_prediction,tf.float32))
+
